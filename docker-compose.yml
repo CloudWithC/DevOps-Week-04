@@ -1,0 +1,22 @@
+services:
+  web:
+    build: .
+    container_name: devops-compose-web
+    ports:
+      - "8081:80"
+    volumes:
+      - web_data:/usr/share/nginx/html/data
+    networks:
+      - devops-network
+
+  redis:
+    image: redis:alpine
+    container_name: devops-redis
+    networks:
+      - devops-network
+
+volumes:
+  web_data:
+
+networks:
+  devops-network:
