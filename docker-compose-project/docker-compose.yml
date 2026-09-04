@@ -1,0 +1,40 @@
+services:
+
+  frontend:
+    build: ./frontend
+    container_name: devops-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - devops-network
+    depends_on:
+      - backend
+
+  backend:
+    build: ./backend
+    container_name: devops-backend
+    ports:
+      - "5000:5000"
+    networks:
+      - devops-network
+    depends_on:
+      - database
+
+  database:
+    image: postgres:16-alpine
+    container_name: devops-database
+    environment:
+      POSTGRES_USER: devopsuser
+      POSTGRES_PASSWORD: devopspass
+      POSTGRES_DB: devopsdb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - devops-network
+
+volumes:
+  postgres-data:
+
+networks:
+  devops-network:
+    driver: bridge
